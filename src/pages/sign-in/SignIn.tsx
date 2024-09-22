@@ -70,7 +70,7 @@ export const SignIn = (props: { disableCustomTheme?: boolean }) => {
     if(!validateInputs()) return
     dispatch(LoginAPI({ username: username.value, password: password.value }))
       .then((res: any)=>{
-        setUsername({...username, error: res.error.message || null})
+        setUsername({...username, error: res.error?.message || null})
         setPassword({value: '', error:null})
       }).finally(()=>setIsSending(false))
     setIsSending(true)
@@ -124,15 +124,15 @@ export const SignIn = (props: { disableCustomTheme?: boolean }) => {
             }}
           >
             <FormControl>
-              <FormLabel htmlFor="email">Email</FormLabel>
+              <FormLabel htmlFor="email">Username</FormLabel>
               <TextField
                 error={Boolean(username.error)}
                 helperText={username.error}
-                id="email"
-                type="email"
-                name="email"
-                placeholder="your@email.com"
-                autoComplete="email"
+                id="username"
+                type="text"
+                name="username"
+                placeholder="your_username"
+                autoComplete="username"
                 autoFocus
                 required
                 fullWidth
@@ -180,7 +180,10 @@ export const SignIn = (props: { disableCustomTheme?: boolean }) => {
               Don&apos;t have an account?{' '}
               <span>
                 <Link
-                  onClick={() => navigate("/signup")}
+                  onClick={(ev)=>{
+                    ev.preventDefault()
+                    navigate("/signup")
+                  }}
                   href="#"
                   variant="body2"
                   sx={{ alignSelf: 'center' }}

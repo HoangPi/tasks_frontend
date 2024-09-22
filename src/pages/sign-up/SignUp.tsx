@@ -232,7 +232,10 @@ export default function SignUp() {
                   Already have an account?{' '}
                   <span>
                     <Link
-                      onClick={()=>navigate("/signin")}
+                      onClick={(ev)=>{
+                        ev.preventDefault()
+                        navigate("/signin")
+                      }}
                       href="#"
                       variant="body2"
                       sx={{ alignSelf: 'center' }}

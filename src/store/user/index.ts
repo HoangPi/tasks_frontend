@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import type { RootState } from '../store'
 import { AxiosClient } from '../../APIs/axiosClient'
 
@@ -57,7 +57,7 @@ export const LoginAPI = createAsyncThunk('user/login',
         catch (err: any) {
             localStorage.removeItem('access')
             localStorage.removeItem('refresh')
-            if (err.response.status === 401) {
+            if (err.response?.status === 401) {
                 throw new Error("User not found")
             }
             throw new Error("Internal error, please try again later")
