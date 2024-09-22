@@ -18,6 +18,7 @@ import { useState } from 'react';
 import { defaultInput } from '../../constants/types';
 import { useAppDispatch } from '../../store/hooks';
 import { LoginAPI } from '../../store/user';
+import { useNavigate } from 'react-router-dom';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -59,13 +60,20 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 
 export const SignIn = (props: { disableCustomTheme?: boolean }) => {
   const [username, setUsername] = useState(defaultInput)
-  const [password, setPassword] = useState(defaultInput) 
+  const [password, setPassword] = useState(defaultInput)
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  const [isSending, setIsSending] = useState(false)
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(username, password)
-    dispatch(LoginAPI({username: username.value, password: password.value}))
+    if(!validateInputs()) return
+    dispatch(LoginAPI({ username: username.value, password: password.value }))
+      .then((res: any)=>{
+        setUsername({...username, error: res.error.message || null})
+        setPassword({value: '', error:null})
+      }).finally(()=>setIsSending(false))
+    setIsSending(true)
   };
 
   const validateInputs = () => {
@@ -74,17 +82,17 @@ export const SignIn = (props: { disableCustomTheme?: boolean }) => {
     let isValid = true;
 
     if (!us) {
-      setUsername({value: username.value, error: "Please enter a username"})
+      setUsername({ value: username.value, error: "Please enter a username" })
       isValid = false;
     } else {
-      setUsername({value: username.value, error: null})
+      setUsername({ value: username.value, error: null })
     }
 
     if (!pass) {
-      setPassword({value: password.value, error: "Please enter a password"})
+      setPassword({ value: password.value, error: "Please enter a password" })
       isValid = false;
     } else {
-      setPassword({value: password.value, error: null})
+      setPassword({ value: password.value, error: null })
     }
 
     return isValid;
@@ -130,7 +138,7 @@ export const SignIn = (props: { disableCustomTheme?: boolean }) => {
                 fullWidth
                 variant="outlined"
                 value={username.value}
-                onChange={(ev)=>setUsername((u)=>({...u, value: ev.target.value}))}
+                onChange={(ev) => setUsername((u) => ({ ...u, value: ev.target.value }))}
                 color={username.error ? 'error' : 'primary'}
                 sx={{ ariaLabel: 'email' }}
               />
@@ -149,7 +157,7 @@ export const SignIn = (props: { disableCustomTheme?: boolean }) => {
                 autoComplete="current-password"
                 autoFocus
                 required
-                onChange={(ev)=>setPassword({value: ev.target.value, error: null})}
+                onChange={(ev) => setPassword({ value: ev.target.value, error: null })}
                 value={password.value}
                 fullWidth
                 variant="outlined"
@@ -164,7 +172,7 @@ export const SignIn = (props: { disableCustomTheme?: boolean }) => {
               type="submit"
               fullWidth
               variant="contained"
-              onClick={validateInputs}
+              disabled={isSending}
             >
               Sign in
             </Button>
@@ -172,7 +180,8 @@ export const SignIn = (props: { disableCustomTheme?: boolean }) => {
               Don&apos;t have an account?{' '}
               <span>
                 <Link
-                  href="/material-ui/getting-started/templates/sign-in/"
+                  onClick={() => navigate("/signup")}
+                  href="#"
                   variant="body2"
                   sx={{ alignSelf: 'center' }}
                 >

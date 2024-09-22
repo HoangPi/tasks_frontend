@@ -57,7 +57,7 @@ export const LoginAPI = createAsyncThunk('user/login',
         catch (err: any) {
             localStorage.removeItem('access')
             localStorage.removeItem('refresh')
-            if (err.response.status === 404) {
+            if (err.response.status === 401) {
                 throw new Error("User not found")
             }
             throw new Error("Internal error, please try again later")
