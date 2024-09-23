@@ -1,4 +1,3 @@
-import * as React from 'react';
 import type {} from '@mui/material/themeCssVarsAugmentation';
 import { createTheme, ThemeOptions, alpha, PaletteMode } from '@mui/material/styles';
 

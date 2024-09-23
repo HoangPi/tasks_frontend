@@ -182,6 +182,7 @@ export const SignIn = (props: { disableCustomTheme?: boolean }) => {
                 <Link
                   onClick={(ev)=>{
                     ev.preventDefault()
+                    if(isSending) return
                     navigate("/signup")
                   }}
                   href="#"

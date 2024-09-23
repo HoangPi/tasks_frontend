@@ -5,9 +5,6 @@ import {
   PaletteMode,
   styled,
 } from '@mui/material/styles';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
@@ -41,15 +38,10 @@ interface TemplateFrameProps {
 }
 
 export default function TemplateFrame({
-  showCustomTheme,
-  toggleCustomTheme,
   mode,
   toggleColorMode,
   children,
 }: TemplateFrameProps) {
-  const handleChange = (event: SelectChangeEvent) => {
-    toggleCustomTheme(event.target.value === 'custom');
-  };
   const signUpTheme = createTheme(getSignUpTheme(mode));
 
   return (
