@@ -11,12 +11,13 @@ import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
+import { getItemContext } from '../contexts/selectedMenu';
 
 const mainListItems = [
   { text: 'Home', icon: <HomeRoundedIcon /> },
+  { text: 'Projects', icon: <AssignmentRoundedIcon /> },
   { text: 'Analytics', icon: <AnalyticsRoundedIcon /> },
   { text: 'Clients', icon: <PeopleRoundedIcon /> },
-  { text: 'Tasks', icon: <AssignmentRoundedIcon /> },
 ];
 
 const secondaryListItems = [
@@ -26,12 +27,13 @@ const secondaryListItems = [
 ];
 
 export default function MenuContent() {
+  const itemContext = getItemContext()
   return (
     <Stack sx={{ flexGrow: 1, p: 1, justifyContent: 'space-between' }}>
       <List dense>
         {mainListItems.map((item, index) => (
           <ListItem key={index} disablePadding sx={{ display: 'block' }}>
-            <ListItemButton selected={index === 0}>
+            <ListItemButton onClick={()=> itemContext && itemContext.setItem(index)} selected={index === (itemContext?.item || 0)}>
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
             </ListItemButton>

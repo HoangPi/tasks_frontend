@@ -9,6 +9,10 @@ import SelectContent from './SelectContent';
 import MenuContent from './MenuContent';
 import CardAlert from './CardAlert';
 import OptionsMenu from './OptionsMenu';
+import { useAppSelector } from '../../../store/hooks';
+import { selectUser } from '../../../store/user';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -24,6 +28,13 @@ const Drawer = styled(MuiDrawer)({
 });
 
 export default function SideMenu() {
+  const user = useAppSelector(state => selectUser(state))
+  const navigate = useNavigate()
+  useEffect(()=>{
+    if(!user.username){
+      navigate('/signin')
+    }
+  },[user])
   return (
     <Drawer
       variant="permanent"
@@ -58,16 +69,16 @@ export default function SideMenu() {
       >
         <Avatar
           sizes="small"
-          alt="Riley Carter"
+          alt={user.name}
           src="/static/images/avatar/7.jpg"
           sx={{ width: 36, height: 36 }}
         />
         <Box sx={{ mr: 'auto' }}>
           <Typography variant="body2" sx={{ fontWeight: 500, lineHeight: '16px' }}>
-            Riley Carter
+            {user.name}
           </Typography>
           <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-            riley@email.com
+            {user.username}
           </Typography>
         </Box>
         <OptionsMenu />

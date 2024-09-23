@@ -70,8 +70,13 @@ export const SignIn = (props: { disableCustomTheme?: boolean }) => {
     if(!validateInputs()) return
     dispatch(LoginAPI({ username: username.value, password: password.value }))
       .then((res: any)=>{
-        setUsername({...username, error: res.error?.message || null})
-        setPassword({value: '', error:null})
+        if(res.error?.message){
+          setUsername({...username, error: res.error?.message || null})
+          setPassword({value: '', error:null})
+        }
+        else{
+          navigate('/')
+        }
       }).finally(()=>setIsSending(false))
     setIsSending(true)
   };

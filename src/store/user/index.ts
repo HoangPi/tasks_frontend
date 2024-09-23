@@ -28,6 +28,8 @@ export const userSlice = createSlice({
         // },
         deleteUser: (state) => {
             state = { ...state, ...userInitValue }
+            localStorage.removeItem("access")
+            localStorage.removeItem("refresh")
         },
     },
     extraReducers: (builder) => {
@@ -48,11 +50,13 @@ export const userSlice = createSlice({
 export const LoginAPI = createAsyncThunk('user/login',
     async (credentialInfo: { username: string, password: string }) => {
         try {
-            const user = (await AxiosClient.post('/login', {
+            const res = (await AxiosClient.post('/login', {
                 username: credentialInfo.username,
                 password: credentialInfo.password
-            })).data.user
-            return user as User
+            })).data
+            localStorage.setItem('access', res.access)
+            localStorage.setItem('refresh', res.refresh)
+            return res.user as User
         }
         catch (err: any) {
             localStorage.removeItem('access')
@@ -73,7 +77,7 @@ export const UpdateUserAPI = createAsyncThunk('user/update',
     }
 )
 
-export const { } = userSlice.actions
+export const { deleteUser } = userSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectUser = (state: RootState) => state.user
