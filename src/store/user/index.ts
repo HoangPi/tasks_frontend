@@ -42,7 +42,9 @@ export const userSlice = createSlice({
             state.username = action.payload.username
         }).addCase(LoginAPI.rejected, (state) => {
             state = { ...state, ...userInitValue }
-        })
+        }).addCase(TestToken.fulfilled, (state, action) => {
+            state = { ...state, ...action.payload }
+        }).addCase(TestToken.rejected, (state) => {state = { ...state, ...userInitValue }})
     }
 })
 
@@ -74,6 +76,12 @@ export const UpdateUserAPI = createAsyncThunk('user/update',
         return (await AxiosClient.put('/update', {
             ...user
         }) as User)
+    }
+)
+
+export const TestToken = createAsyncThunk('user/verifyToken',
+    async (): Promise<User> => {
+        return (await AxiosClient.get('/user')).data as User
     }
 )
 

@@ -70,12 +70,10 @@ export default function TemplateFrame({
               variant="text"
               size="small"
               aria-label="Back to templates"
-              startIcon={<ArrowBackRoundedIcon />}
               component="a"
-              href="/material-ui/getting-started/templates/"
               sx={{ display: { xs: 'none', sm: 'flex' } }}
+              disabled={true}
             >
-              Back to templates
             </Button>
             <IconButton
               size="small"

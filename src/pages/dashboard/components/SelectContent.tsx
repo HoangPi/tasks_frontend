@@ -12,6 +12,7 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import DevicesRoundedIcon from '@mui/icons-material/DevicesRounded';
 import SmartphoneRoundedIcon from '@mui/icons-material/SmartphoneRounded';
 import ConstructionRoundedIcon from '@mui/icons-material/ConstructionRounded';
+import { useNavigate } from 'react-router-dom';
 
 const Avatar = styled(MuiAvatar)(({ theme }) => ({
   width: 28,
@@ -32,6 +33,7 @@ export default function SelectContent() {
   const handleChange = (event: SelectChangeEvent) => {
     setCompany(event.target.value as string);
   };
+  const navigate = useNavigate()
 
   return (
     <Select
@@ -91,11 +93,11 @@ export default function SelectContent() {
         <ListItemText primary="Sitemark-Admin" secondary="Web app" />
       </MenuItem>
       <Divider sx={{ mx: -1 }} />
-      <MenuItem value={40}>
+      <MenuItem onClick={()=>navigate('/project/add')} value={40}>
         <ListItemIcon>
           <AddRoundedIcon />
         </ListItemIcon>
-        <ListItemText primary="Add product" secondary="Web app" />
+        <ListItemText primary="Add project" secondary="Web app" />
       </MenuItem>
     </Select>
   );

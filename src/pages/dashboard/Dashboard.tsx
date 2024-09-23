@@ -18,7 +18,10 @@ import {
   treeViewCustomizations,
 } from './theme/customizations';
 import { ItemContext } from './contexts/selectedMenu';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useAppDispatch } from '../../store/hooks';
+import { TestToken } from '../../store/user';
+import { useNavigate } from 'react-router-dom';
 
 const xThemeComponents = {
   ...chartsCustomizations,
@@ -29,6 +32,15 @@ const xThemeComponents = {
 
 export default function Dashboard(props: { disableCustomTheme?: boolean }) {
   const [item, setItem] = useState(0)
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  useEffect(()=>{
+    dispatch(TestToken()).then((result: any) => {
+      if(result.error) {
+        navigate('/signin')
+      }
+    })
+  },[])
   return (
     <ItemContext.Provider value={{item, setItem}}>
       <AppTheme {...props} themeComponents={xThemeComponents}>
