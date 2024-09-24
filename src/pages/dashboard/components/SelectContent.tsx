@@ -13,6 +13,7 @@ import DevicesRoundedIcon from '@mui/icons-material/DevicesRounded';
 import SmartphoneRoundedIcon from '@mui/icons-material/SmartphoneRounded';
 import ConstructionRoundedIcon from '@mui/icons-material/ConstructionRounded';
 import { useNavigate } from 'react-router-dom';
+import { useAppSelector } from '../../../store/hooks';
 
 const Avatar = styled(MuiAvatar)(({ theme }) => ({
   width: 28,
@@ -28,12 +29,14 @@ const ListItemAvatar = styled(MuiListItemAvatar)({
 });
 
 export default function SelectContent() {
-  const [company, setCompany] = React.useState('');
+  const [company, setCompany] = React.useState('0');
 
   const handleChange = (event: SelectChangeEvent) => {
     setCompany(event.target.value as string);
+    console.log(event.target.value as string)
   };
   const navigate = useNavigate()
+  const projects = useAppSelector(state => state.project)
 
   return (
     <Select
@@ -59,7 +62,7 @@ export default function SelectContent() {
       }}
     >
       <ListSubheader sx={{ pt: 0 }}>Production</ListSubheader>
-      <MenuItem value="">
+      {/* <MenuItem value="">
         <ListItemAvatar>
           <Avatar alt="Sitemark web">
             <DevicesRoundedIcon sx={{ fontSize: '1rem' }} />
@@ -82,18 +85,19 @@ export default function SelectContent() {
           </Avatar>
         </ListItemAvatar>
         <ListItemText primary="Sitemark-Store" secondary="Web app" />
-      </MenuItem>
-      <ListSubheader>Development</ListSubheader>
-      <MenuItem value={30}>
-        <ListItemAvatar>
-          <Avatar alt="Sitemark Store">
-            <ConstructionRoundedIcon sx={{ fontSize: '1rem' }} />
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary="Sitemark-Admin" secondary="Web app" />
-      </MenuItem>
+      </MenuItem> */}
+      {projects.items.map((item, key) => (
+        <MenuItem value={10*key} key={key}>
+          <ListItemAvatar>
+            <Avatar alt="Sitemark Store">
+              <DevicesRoundedIcon sx={{ fontSize: '1rem' }} />
+            </Avatar>
+          </ListItemAvatar>
+          <ListItemText primary={item.name} secondary="Web app" />
+        </MenuItem>
+      ))}
       <Divider sx={{ mx: -1 }} />
-      <MenuItem onClick={()=>navigate('/project/add')} value={40}>
+      <MenuItem onClick={() => navigate('/project/add')} value={40}>
         <ListItemIcon>
           <AddRoundedIcon />
         </ListItemIcon>

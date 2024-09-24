@@ -1,5 +1,5 @@
 import './App.css'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom'
 import { SignIn } from './pages/sign-in/SignIn'
 import SignUp from './pages/sign-up/SignUp'
 import AppNavbar from './pages/dashboard/components/AppNavbar'
@@ -13,6 +13,7 @@ function App() {
       <BrowserRouter>
         <AppNavbar />
         <Routes>
+          <Route path='/:projectid' loader={async (r, p) => {console.log(r);console.log(p)}} element={<Dashboard />} />
           <Route path='/' element={<Dashboard />} />
           <Route path='/signin' element={<SignIn />} />
           <Route path='/signup' element={<SignUp />} />
