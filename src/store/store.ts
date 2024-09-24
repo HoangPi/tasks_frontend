@@ -1,6 +1,5 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import userReducer from "./user"
-import employeeReducer from "./employee"
 import projectReducer from "./project"
 import storage from 'redux-persist/lib/storage'
 import {
@@ -17,7 +16,6 @@ import {
 const reducers = combineReducers({
   user: userReducer,
   project: projectReducer,
-  employee: employeeReducer
 })
 
 const persistConfig = {

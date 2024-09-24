@@ -10,8 +10,9 @@ type StoredProject = {
     owner: string
 }
 
-export const ProjectsInitState: {items: StoredProject[]} = {
-    items: []
+export const ProjectsInitState: {items: StoredProject[], choosen: number} = {
+    items: [],
+    choosen: -1
 }
 
 export const projectSlice = createSlice({
@@ -23,6 +24,9 @@ export const projectSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(CreateProject.fulfilled, (state, action) => {
             state.items = [...state.items, action.payload]
+        }).addCase(GetProjects.fulfilled, (state, action) => {
+            console.log(action.payload)
+            state.items = action.payload
         })
     }
 })
@@ -47,7 +51,13 @@ export const GetProjects = createAsyncThunk('project/get',
     async (): Promise<StoredProject[]> => {
         try{
             const res = await AxiosClient.get('project')
-            return res.data.projects as StoredProject[]
+            return res.data.projects.map((item: any) => ({
+                name: item.name,
+                id: item.id,
+                description: item.description,
+                members: item.employees
+            }))
+            // res.data.projects as StoredProject[] 
         }
         catch(err){
             console.error(err)
