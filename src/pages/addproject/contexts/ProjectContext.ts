@@ -8,8 +8,8 @@ export type Project = {
 }
 
 type ProjectContextType = {
-    project: Project | null,
-    setProject: React.Dispatch<React.SetStateAction<Project | null>>
+    project: Project,
+    setProject: React.Dispatch<React.SetStateAction<Project>>
 }
 
 export const ProjectContext = createContext<ProjectContextType | null>(null)

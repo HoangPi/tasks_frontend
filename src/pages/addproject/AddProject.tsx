@@ -13,21 +13,22 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider, PaletteMode } from '@mui/material/styles';
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
-import AddressForm from './components/AddressForm';
+import FirstForm from './components/FirstForm';
 import getCheckoutTheme from './theme/getCheckoutTheme';
 import Info from './components/Info';
 import InfoMobile from './components/InfoMobile';
-import PaymentForm from './components/PaymentForm';
+import PaymentForm from './components/TeamMemberForm';
 import Review from './components/Review';
 import SitemarkIcon from './components/SitemarkIcon';
 import TemplateFrame from './TemplateFrame';
-import { Project, ProjectContext } from './contexts/teamContext';
+import { Project, ProjectContext } from './contexts/ProjectContext';
+import { useAppSelector } from '../../store/hooks';
 
 const steps = ['Shipping address', 'Payment details', 'Review your order'];
 function getStepContent(step: number) {
   switch (step) {
     case 0:
-      return <AddressForm />;
+      return <FirstForm />;
     case 1:
       return <PaymentForm />;
     case 2:
@@ -71,7 +72,13 @@ export default function AddProject() {
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
-  const [project, setProject] = React.useState<Project | null>(null)
+  const user = useAppSelector(state=>state.user)
+  const [project, setProject] = React.useState<Project>({
+    name: '',
+    description: '',
+    members: [],
+    owner: user.username
+  })
   return (
     <ProjectContext.Provider value={{project, setProject}}>
       <TemplateFrame
@@ -108,7 +115,7 @@ export default function AddProject() {
                   maxWidth: 500,
                 }}
               >
-                <Info totalPrice={activeStep >= 2 ? '$144.97' : '$134.98'} />
+                <Info totalPrice={project.name} />
               </Box>
             </Grid>
             <Grid
@@ -173,10 +180,10 @@ export default function AddProject() {
                       Selected products
                     </Typography>
                     <Typography variant="body1">
-                      {activeStep >= 2 ? '$144.97' : '$134.98'}
+                      {project.name}
                     </Typography>
                   </div>
-                  <InfoMobile totalPrice={activeStep >= 2 ? '$144.97' : '$134.98'} />
+                  <InfoMobile totalPrice={project.name} />
                 </CardContent>
               </Card>
               <Box
