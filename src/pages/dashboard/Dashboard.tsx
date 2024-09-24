@@ -22,6 +22,8 @@ import { useEffect, useState } from 'react';
 import { useAppDispatch } from '../../store/hooks';
 import { TestToken } from '../../store/user';
 import { useNavigate } from 'react-router-dom';
+import { GetProjects } from '../../store/project';
+import { getEmployees } from '../../store/employee';
 
 const xThemeComponents = {
   ...chartsCustomizations,
@@ -39,7 +41,8 @@ export default function Dashboard(props: { disableCustomTheme?: boolean }) {
       if(result.error) {
         navigate('/signin')
       }
-    })
+      dispatch(GetProjects())
+    }).then((res) => dispatch(getEmployees()))
   },[])
   return (
     <ItemContext.Provider value={{item, setItem}}>

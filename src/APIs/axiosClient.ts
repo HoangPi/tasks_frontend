@@ -15,26 +15,50 @@ AxiosClient.interceptors.response.use(res => {
     res.request.headers
     return res
 }, async (err) => {
-    localStorage.removeItem('access')
-    if (err.response.status === 401 && err.config.headers.Authorization) {
-        if (!localStorage.getItem('refresh')) {
-            Promise.reject(err)
-        }
-        try {
-            const refreshRes = await AxiosClient.post('refresh', {
-                refresh: localStorage.getItem('refresh')
-            })
-            if(Boolean(refreshRes.data.access)){
-                localStorage.setItem('access', refreshRes.data.access)
-                err.config.headers.Authorization = `Bearer ${refreshRes.data.access}`
-                return await AxiosClient(err.config)
+    if(err.response.status === 401){
+        localStorage.removeItem('access')
+        if(err.config.url === '/login' || err.config.url === '/refresh'){
+            return {
+                message: 'Unauthorize',
+                status: 401
             }
         }
-        catch(e){
-            localStorage.removeItem('refresh')
+        if(!localStorage.getItem('refresh')){
             Promise.reject(err)
         }
+        const refreshRes = await AxiosClient.post('/refresh', {
+            refresh: localStorage.getItem('refresh')
+        })
+        if(!Boolean(refreshRes.data.access)){
+            Promise.reject(err)
+        }
+
+        localStorage.setItem('access', refreshRes.data.access)
+        err.config.headers.Authorization = `Bearer ${refreshRes.data.access}`
+        return await AxiosClient(err.config)
     }
-    localStorage.removeItem('refresh')
-    Promise.reject(err)
+    else{
+        Promise.reject(err)
+    }
+    // if (err.response.status === 401 && err.config.headers.Authorization) {
+    //     if (!localStorage.getItem('refresh')) {
+    //         Promise.reject(err)
+    //     }
+    //     try {
+    //         const refreshRes = await AxiosClient.post('refresh', {
+    //             refresh: localStorage.getItem('refresh')
+    //         })
+    //         if(Boolean(refreshRes.data.access)){
+    //             localStorage.setItem('access', refreshRes.data.access)
+    //             err.config.headers.Authorization = `Bearer ${refreshRes.data.access}`
+    //             return await AxiosClient(err.config)
+    //         }
+    //     }
+    //     catch(e){
+    //         localStorage.removeItem('refresh')
+    //         Promise.reject(err)
+    //     }
+    // }
+    // localStorage.removeItem('refresh')
+    // Promise.reject(err)
 })

@@ -55,15 +55,18 @@ export const LoginAPI = createAsyncThunk('user/login',
             const res = (await AxiosClient.post('/login', {
                 username: credentialInfo.username,
                 password: credentialInfo.password
-            })).data
-            localStorage.setItem('access', res.access)
-            localStorage.setItem('refresh', res.refresh)
-            return res.user as User
+            }))
+            if(res.status === 401){
+                throw new Error("User not found")
+            }
+            localStorage.setItem('access', res.data.access)
+            localStorage.setItem('refresh', res.data.refresh)
+            return res.data.user as User
         }
         catch (err: any) {
             localStorage.removeItem('access')
             localStorage.removeItem('refresh')
-            if (err.response?.status === 401) {
+            if (err.message === "User not found") {
                 throw new Error("User not found")
             }
             throw new Error("Internal error, please try again later")

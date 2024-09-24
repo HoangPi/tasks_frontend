@@ -1,6 +1,6 @@
 import Grid from '@mui/material/Grid2';
 import { getProjectContext } from '../contexts/ProjectContext';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Autocomplete, Chip, TextField } from '@mui/material';
 import { useDebounce } from "@uidotdev/usehooks"
 import { AxiosClient } from '../../../APIs/axiosClient';
@@ -50,7 +50,7 @@ export default function PaymentForm() {
       ></Autocomplete>
       </Grid>
 
-      {projectContext?.project.members.map((item, key) => (<>
+      {projectContext?.project.members.map((item, key) => (<React.Fragment key={key}>
         <Grid size={{ xs: 3 }} key={key}>
           <Chip
             label={item}
@@ -61,7 +61,7 @@ export default function PaymentForm() {
             })) }}
           />
         </Grid>
-      </>))}
+      </React.Fragment>))}
     </Grid>
   );
 }

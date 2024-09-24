@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, Store } from "@reduxjs/toolkit"
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { Project } from "../../pages/addproject/contexts/ProjectContext"
 import { AxiosClient } from "../../APIs/axiosClient"
 
@@ -42,3 +42,21 @@ export const CreateProject = createAsyncThunk('project/create',
         }
     }
 )
+
+export const GetProjects = createAsyncThunk('project/get',
+    async (): Promise<StoredProject[]> => {
+        try{
+            const res = await AxiosClient.get('project')
+            return res.data.projects as StoredProject[]
+        }
+        catch(err){
+            console.error(err)
+            throw new Error("Error")
+        }
+    }
+)
+
+export const { } = projectSlice.actions
+
+
+export default projectSlice.reducer
