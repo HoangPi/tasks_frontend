@@ -6,29 +6,6 @@ import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import { getProjectContext } from '../contexts/ProjectContext';
 
-const products = [
-  {
-    name: "Project's description",
-    desc: 'Monthly subscription',
-    price: '$15.00',
-  },
-  {
-    name: 'Dedicated support',
-    desc: 'Included in the Professional plan',
-    price: 'Free',
-  },
-  {
-    name: 'Hardware',
-    desc: 'Devices needed for development',
-    price: '$69.99',
-  },
-  {
-    name: 'Landing page template',
-    desc: 'License',
-    price: '$49.99',
-  },
-];
-
 interface InfoProps {
   totalPrice: string;
 }
@@ -58,7 +35,7 @@ export default function Info({ totalPrice }: InfoProps) {
             sx={{mr: 2}}
             primary={"Project's description"}
             secondary={project?.description.split('\n').map(item => (
-                <>{item}</>
+                <b>{item}<br /></b>
             ))}
           ></ListItemText>
         </ListItem>

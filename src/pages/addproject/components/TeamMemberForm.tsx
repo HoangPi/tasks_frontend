@@ -55,7 +55,10 @@ export default function PaymentForm() {
           <Chip
             label={item}
             variant='outlined'
-            onDelete={() => { }}
+            onDelete={() => { projectContext.setProject(p => ({
+              ...p,
+              members: projectContext.project.members.filter(value => (value !== item))
+            })) }}
           />
         </Grid>
       </>))}

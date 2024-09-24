@@ -23,17 +23,11 @@ export default function Review() {
     <Stack spacing={2}>
       <List disablePadding>
         <ListItem sx={{ py: 1, px: 0 }}>
-          <ListItemText primary="Products" secondary="4 selected" />
-          <Typography variant="body2">{ProjectContext?.project.name}</Typography>
+          <ListItemText primary="Project" />
         </ListItem>
         <ListItem sx={{ py: 1, px: 0 }}>
-          <ListItemText primary="Shipping" secondary="Plus taxes" />
-          <Typography variant="body2">$9.99</Typography>
-        </ListItem>
-        <ListItem sx={{ py: 1, px: 0 }}>
-          <ListItemText primary="Total" />
           <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            $144.97
+            <b>{ProjectContext?.project.name}</b>
           </Typography>
         </ListItem>
       </List>
@@ -46,32 +40,30 @@ export default function Review() {
       >
         <div>
           <Typography variant="subtitle2" gutterBottom>
-            Shipment details
+            Project's description
           </Typography>
-          <Typography gutterBottom>John Smith</Typography>
+
           <Typography gutterBottom sx={{ color: 'text.secondary' }}>
-            {addresses.join(', ')}
+            {ProjectContext?.project.description.split('\n').map(item => <b>{item} <br /></b>)}
           </Typography>
         </div>
         <div>
           <Typography variant="subtitle2" gutterBottom>
-            Payment details
+            Team members
           </Typography>
           <Grid container>
-            {payments.map((payment) => (
-              <React.Fragment key={payment.name}>
-                <Stack
-                  direction="row"
-                  spacing={1}
-                  useFlexGap
-                  sx={{ width: '100%', mb: 1 }}
-                >
-                  <Typography variant="body1" sx={{ color: 'text.secondary' }}>
-                    {payment.name}
+            {ProjectContext?.project.members.map((item, key)=>(
+              <Stack
+                key={key}
+                direction={"row"}
+                spacing={1}
+                useFlexGap
+                sx={{width: '100%', mb: 1}}
+              >
+                <Typography variant="body1" sx={{ color: 'text.secondary' }}>
+                    {item}
                   </Typography>
-                  <Typography variant="body2">{payment.detail}</Typography>
-                </Stack>
-              </React.Fragment>
+              </Stack>
             ))}
           </Grid>
         </div>

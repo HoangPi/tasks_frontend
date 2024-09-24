@@ -21,10 +21,11 @@ import PaymentForm from './components/TeamMemberForm';
 import Review from './components/Review';
 import SitemarkIcon from './components/SitemarkIcon';
 import TemplateFrame from './TemplateFrame';
-import { Project, ProjectContext } from './contexts/ProjectContext';
-import { useAppSelector } from '../../store/hooks';
+import { getProjectContext, Project, ProjectContext } from './contexts/ProjectContext';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { CreateProject } from '../../store/project';
 
-const steps = ['Shipping address', 'Payment details', 'Review your order'];
+const steps = ['Project', 'Team members', 'Review your Project'];
 function getStepContent(step: number) {
   switch (step) {
     case 0:
@@ -43,6 +44,8 @@ export default function AddProject() {
   const checkoutTheme = createTheme(getCheckoutTheme(mode));
   const defaultTheme = createTheme({ palette: { mode } });
   const [activeStep, setActiveStep] = React.useState(0);
+  const userState = useAppSelector(state => state.user)
+  const dispatch = useAppDispatch()
   // This code only runs on the client side, to determine the system color preference
   React.useEffect(() => {
     // Check if there is a preferred mode in localStorage
@@ -66,8 +69,22 @@ export default function AddProject() {
   const toggleCustomTheme = () => {
     setShowCustomTheme((prev) => !prev);
   };
-  const handleNext = () => {
-    setActiveStep(activeStep + 1);
+  const handleNext = async () => {
+    if(activeStep === steps.length - 1){
+      try{
+        const response: any = await dispatch(CreateProject(project))
+        if(response.error?.message){
+          return
+        }
+        setActiveStep(activeStep + 1);
+      }
+      catch(err){
+        console.error(err)
+      }
+    }
+    else{
+      setActiveStep(activeStep + 1);
+    }
   };
   const handleBack = () => {
     setActiveStep(activeStep - 1);
@@ -283,7 +300,7 @@ export default function AddProject() {
                         onClick={handleNext}
                         sx={{ width: { xs: '100%', sm: 'fit-content' } }}
                       >
-                        {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
+                        {activeStep === steps.length - 1 ? 'Create' : 'Next'}
                       </Button>
                     </Box>
                   </React.Fragment>
