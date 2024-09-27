@@ -1,12 +1,13 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { Project } from "../../pages/addproject/contexts/ProjectContext"
 import { AxiosClient } from "../../APIs/axiosClient"
+import { User } from "../user"
 
 type StoredProject = {
     id: number,
     name: string,
     description: string,
-    members: string[],
+    members: User[],
     owner: string
 }
 
@@ -19,7 +20,9 @@ export const projectSlice = createSlice({
     name: 'project',
     initialState: ProjectsInitState,
     reducers: {
-
+        changeItem: (state, action: PayloadAction<number>) => {
+            state.choosen = action.payload
+        }
     },
     extraReducers: (builder) => {
         builder.addCase(CreateProject.fulfilled, (state, action) => {
@@ -27,6 +30,9 @@ export const projectSlice = createSlice({
         }).addCase(GetProjects.fulfilled, (state, action) => {
             console.log(action.payload)
             state.items = action.payload
+            if(action.payload.length > 0){
+                state.choosen = 0
+            }
         })
     }
 })
@@ -55,7 +61,7 @@ export const GetProjects = createAsyncThunk('project/get',
                 name: item.name,
                 id: item.id,
                 description: item.description,
-                members: item.employees
+                members: item.members
             }))
             // res.data.projects as StoredProject[] 
         }
@@ -66,7 +72,7 @@ export const GetProjects = createAsyncThunk('project/get',
     }
 )
 
-export const { } = projectSlice.actions
+export const { changeItem } = projectSlice.actions
 
 
 export default projectSlice.reducer

@@ -3,6 +3,7 @@ import type { RootState } from '../store'
 import { AxiosClient } from '../../APIs/axiosClient'
 
 export interface User {
+    id: number,
     name: string,
     username: string,
     phone: string | null,
@@ -10,6 +11,7 @@ export interface User {
 }
 
 const userInitValue: User = {
+    id: -1,
     name: '',
     username: '',
     phone: '',
@@ -40,6 +42,7 @@ export const userSlice = createSlice({
             state.name = action.payload.name
             state.phone = action.payload.phone
             state.username = action.payload.username
+            state.id = action.payload.id
         }).addCase(LoginAPI.rejected, (state) => {
             state = { ...state, ...userInitValue }
         }).addCase(TestToken.fulfilled, (state, action) => {

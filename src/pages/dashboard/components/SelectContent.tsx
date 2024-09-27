@@ -13,7 +13,8 @@ import DevicesRoundedIcon from '@mui/icons-material/DevicesRounded';
 import SmartphoneRoundedIcon from '@mui/icons-material/SmartphoneRounded';
 import ConstructionRoundedIcon from '@mui/icons-material/ConstructionRounded';
 import { useNavigate } from 'react-router-dom';
-import { useAppSelector } from '../../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { changeItem } from '../../../store/project';
 
 const Avatar = styled(MuiAvatar)(({ theme }) => ({
   width: 28,
@@ -37,6 +38,7 @@ export default function SelectContent() {
   };
   const navigate = useNavigate()
   const projects = useAppSelector(state => state.project)
+  const dispatch = useAppDispatch()
 
   return (
     <Select
@@ -93,7 +95,7 @@ export default function SelectContent() {
               <DevicesRoundedIcon sx={{ fontSize: '1rem' }} />
             </Avatar>
           </ListItemAvatar>
-          <ListItemText primary={item.name} secondary="Web app" />
+          <ListItemText onClick={()=>dispatch(changeItem(key))} primary={item.name} secondary="Web app" />
         </MenuItem>
       ))}
       <Divider sx={{ mx: -1 }} />
